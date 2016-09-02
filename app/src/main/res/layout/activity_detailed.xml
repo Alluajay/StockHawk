@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.sam_chordas.android.stockhawk.ui.DetailedActivity">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="10dp"
+        android:id="@+id/card"
+        android:background="@color/dim_foreground_disabled_material_light"
+        >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Bidprice:"
+                android:textSize="20dp"
+                android:id="@+id/bp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textSize="30dp"
+                android:id="@+id/Bidprice"
+                android:text="Created"
+                android:layout_toRightOf="@id/bp"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Change:"
+                android:textSize="20dp"
+                android:layout_below="@+id/bp"
+                android:id="@+id/ch"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textSize="30dp"
+                android:id="@+id/Change"
+                android:text="Created"
+                android:layout_below="@+id/Bidprice"
+                android:layout_toRightOf="@+id/ch"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="%Change:"
+                android:textSize="20dp"
+                android:id="@+id/pc"
+                android:layout_below="@+id/ch"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textSize="30dp"
+                android:id="@+id/Percentagechange"
+                android:text="Created"
+                android:layout_below="@+id/Change"
+                android:layout_toRightOf="@+id/pc"
+                />
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/card"/>
+
+
+
+</RelativeLayout>

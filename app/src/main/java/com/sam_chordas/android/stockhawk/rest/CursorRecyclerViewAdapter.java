@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.support.v7.widget.RecyclerView;
 
+import com.sam_chordas.android.stockhawk.touch_helper.ItemTouchHelperAdapter;
+
 /**
  * Created by sam_chordas on 10/6/15.
  *  Credit to skyfishjy gist:
@@ -17,6 +19,7 @@ public abstract class CursorRecyclerViewAdapter <VH extends RecyclerView.ViewHol
   private boolean dataIsValid;
   private int rowIdColumn;
   private DataSetObserver mDataSetObserver;
+  public ItemTouchHelperAdapter itemTouchHelperAdapter;
   public CursorRecyclerViewAdapter(Context context, Cursor cursor){
     mCursor = cursor;
     dataIsValid = cursor != null;
@@ -50,7 +53,7 @@ public abstract class CursorRecyclerViewAdapter <VH extends RecyclerView.ViewHol
     super.setHasStableIds(true);
   }
 
-  public abstract void onBindViewHolder(VH viewHolder, Cursor cursor);
+  public abstract void onBindViewHolder(VH viewHolder, Cursor cursor , int postion);
 
   @Override
   public void onBindViewHolder(VH viewHolder, int position) {
@@ -61,7 +64,7 @@ public abstract class CursorRecyclerViewAdapter <VH extends RecyclerView.ViewHol
       throw new IllegalStateException("Could not move Cursor to position: " + position);
     }
 
-    onBindViewHolder(viewHolder, mCursor);
+    onBindViewHolder(viewHolder, mCursor,position);
   }
 
   public Cursor swapCursor(Cursor newCursor){

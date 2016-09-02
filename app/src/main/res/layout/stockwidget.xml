@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#6e9898a1"
+    android:padding="@dimen/widget_margin"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Widget_Head"
+        android:text="Widget Head"
+        android:textSize="35dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Widget_Bidprice"
+        android:text="BidP"
+        android:layout_alignParentRight="true"
+        android:textSize="30dp"
+        android:textAlignment="inherit"
+        android:gravity="left" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Change:"
+        android:textSize="20dp"
+        android:layout_below="@+id/Widget_Head"
+        android:id="@+id/Widget_change"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:textSize="30dp"
+        android:id="@+id/Change"
+        android:text="Created"
+        android:layout_below="@+id/Widget_Bidprice"
+        android:layout_alignParentLeft="true"
+        />
+
+
+</RelativeLayout>

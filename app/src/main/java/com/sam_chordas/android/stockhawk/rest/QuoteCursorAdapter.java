@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sam_chordas.android.stockhawk.R;
@@ -29,9 +30,11 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
   private static Context mContext;
   private static Typeface robotoLight;
   private boolean isPercent;
+
   public QuoteCursorAdapter(Context context, Cursor cursor){
     super(context, cursor);
     mContext = context;
+
   }
 
   @Override
@@ -44,8 +47,11 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
   }
 
   @Override
-  public void onBindViewHolder(final ViewHolder viewHolder, final Cursor cursor){
+  public void onBindViewHolder(final ViewHolder viewHolder, final Cursor cursor,int postion){
+    String symbol =cursor.getString(cursor.getColumnIndex("symbol"));
     viewHolder.symbol.setText(cursor.getString(cursor.getColumnIndex("symbol")));
+    viewHolder.itemView.setTag(symbol);
+    viewHolder.itemView.setContentDescription(symbol);
     viewHolder.bidPrice.setText(cursor.getString(cursor.getColumnIndex("bid_price")));
     int sdk = Build.VERSION.SDK_INT;
     if (cursor.getInt(cursor.getColumnIndex("is_up")) == 1){
@@ -80,6 +86,8 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
     notifyItemRemoved(position);
   }
 
+
+
   @Override public int getItemCount() {
     return super.getItemCount();
   }
@@ -89,12 +97,14 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
     public final TextView symbol;
     public final TextView bidPrice;
     public final TextView change;
+    public final LinearLayout linearLayout;
     public ViewHolder(View itemView){
       super(itemView);
       symbol = (TextView) itemView.findViewById(R.id.stock_symbol);
       symbol.setTypeface(robotoLight);
       bidPrice = (TextView) itemView.findViewById(R.id.bid_price);
       change = (TextView) itemView.findViewById(R.id.change);
+      linearLayout =(LinearLayout)itemView.findViewById(R.id.itemlist);
     }
 
     @Override

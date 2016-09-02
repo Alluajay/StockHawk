@@ -3,11 +3,13 @@ package com.sam_chordas.android.stockhawk.ui;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,6 +55,10 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private Context mContext;
   private Cursor mCursor;
   boolean isConnected;
+  public static final String TAG_STOCK_SYMBOL = "STOCK_SYMBOL";
+  public static String TAG_STOCK_CREATED ="Stock_created";
+  public static String Tag="MyStocksActivity";
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +80,24 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       if (isConnected){
         startService(mServiceIntent);
       } else{
+        Log.d(Tag,"network not connected");
         networkToast();
+        AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+        alertDialog.setTitle("No Internet Connection").setMessage("Your phone is not connected to internet.Make sure you are connteced")
+                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                  @Override
+                  public void onClick(DialogInterface dialog, int which) {
+                    closeContextMenu();
+                  }
+                });
+        AlertDialog alertDialog1=alertDialog.create();
+        alertDialog1.show();
       }
     }
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
+
 
     mCursorAdapter = new QuoteCursorAdapter(this, null);
     recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this,
@@ -86,6 +105,12 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
               @Override public void onItemClick(View v, int position) {
                 //TODO:
                 // do something on item click
+                Intent intent = new Intent(MyStocksActivity.this, DetailedActivity.class);
+                intent.putExtra(DetailedActivity.TAG_STOCK_SYMBOL, (String) v.getTag());
+
+               Log.d(TAG_STOCK_SYMBOL,(String) v.getTag());
+
+                startActivity(intent);
               }
             }));
     recyclerView.setAdapter(mCursorAdapter);
@@ -220,6 +245,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
   @Override
   public void onLoaderReset(Loader<Cursor> loader){
+
     mCursorAdapter.swapCursor(null);
   }
 
