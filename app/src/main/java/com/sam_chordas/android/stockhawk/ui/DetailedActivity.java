@@ -115,14 +115,11 @@ public class DetailedActivity extends AppCompatActivity implements
 
             Entry one=new Entry( Float.parseFloat(Data.getString(Data.getColumnIndex(QuoteColumns.BIDPRICE))),Data.getPosition());
             valueSet1.add(one);
-            Log.e(TAG_STOCK_SYMBOL,Data.getString(Data.getColumnIndex(QuoteColumns.BIDPRICE)));
         }
         ArrayList<Entry> values=new ArrayList<>();
         for(int i=valueSet1.size()-1;i>=0;i--){
             values.add(valueSet1.get(i));
             xAxis.add("");
-
-            Log.e(Tag,"in pos "+i );
         }
 
         LineDataSet barDataSet1 = new LineDataSet(values, currency);
