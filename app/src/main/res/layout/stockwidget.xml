@@ -11,14 +11,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Widget_Head"
-        android:text="Widget Head"
+        android:text="@string/stocksymbol"
+        android:contentDescription="@string/stocksymbol"
         android:importantForAccessibility="yes"
         android:textSize="35dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Widget_Bidprice"
-        android:text="BidP"
+        android:text="@string/bidprice"
+        android:contentDescription="@string/bidprice"
         android:layout_alignParentRight="true"
         android:textSize="30dp"
         android:textAlignment="inherit"
@@ -26,7 +28,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:text="Change:"
+        android:text="@string/change"
+        android:contentDescription="@string/change"
         android:textSize="20dp"
         android:layout_below="@+id/Widget_Head"
         android:id="@+id/Widget_change"/>
@@ -35,13 +38,15 @@
         android:layout_height="40dp"
         android:textSize="30dp"
         android:id="@+id/Widget_Pchange"
-        android:text="Created"
+        android:text="@string/percent_change"
+        android:contentDescription="@string/percent_change"
         android:layout_below="@+id/Widget_Bidprice"
         android:layout_alignParentRight="true"
         />
 
     <Button
         android:id="@+id/Wid_button1"
+        android:contentDescription="@string/prev"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_width="wrap_content"
@@ -51,6 +56,7 @@
 
     <Button
         android:id="@+id/Wid_button2"
+        android:contentDescription="@string/next"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
