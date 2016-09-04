@@ -6,7 +6,11 @@ import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.RemoteException;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
@@ -16,6 +20,10 @@ import com.sam_chordas.android.stockhawk.rest.Utils;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -51,7 +59,7 @@ public class StockTaskService extends GcmTaskService{
   public int onRunTask(TaskParams params){
     Cursor initQueryCursor;
     if (mContext == null){
-      mContext = this;
+      mContext = this.getBaseContext();
     }
     StringBuilder urlStringBuilder = new StringBuilder();
     try{
@@ -103,6 +111,7 @@ public class StockTaskService extends GcmTaskService{
     // finalize the URL for the API query.
     urlStringBuilder.append("&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables."
         + "org%2Falltableswithkeys&callback=");
+    Log.e(LOG_TAG,urlStringBuilder.toString());
 
     String urlString;
     String getResponse;
@@ -112,21 +121,45 @@ public class StockTaskService extends GcmTaskService{
       urlString = urlStringBuilder.toString();
       try{
         getResponse = fetchData(urlString);
-        result = GcmNetworkManager.RESULT_SUCCESS;
-        try {
-          ContentValues contentValues = new ContentValues();
-          // update ISCURRENT to 0 (false) so new data is current
-          if (isUpdate){
-            contentValues.put(QuoteColumns.ISCURRENT, 0);
-            mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
+        JSONObject jsonObject=new JSONObject(getResponse);
+        if(params.getTag().equals("add")){
+        JSONObject quote=jsonObject.getJSONObject("query").getJSONObject("results").getJSONObject("quote");
+        Log.e(LOG_TAG,quote.toString());
+        if(quote.getString("Ask")!="null"){
+         result = GcmNetworkManager.RESULT_SUCCESS;
+            try {
+              ContentValues contentValues = new ContentValues();
+                // update ISCURRENT to 0 (false) so new data is current
+              if (isUpdate){
+              contentValues.put(QuoteColumns.ISCURRENT, 0);
+              mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
                 null, null);
-          }
-          mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
+               }
+              mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
               Utils.quoteJsonToContentVals(getResponse));
-        }catch (RemoteException | OperationApplicationException e){
+          }catch (RemoteException | OperationApplicationException e){
           Log.e(LOG_TAG, "Error applying batch insert", e);
+          }
+          }
+        }else {
+          result = GcmNetworkManager.RESULT_SUCCESS;
+          try {
+            ContentValues contentValues = new ContentValues();
+            // update ISCURRENT to 0 (false) so new data is current
+            if (isUpdate){
+              contentValues.put(QuoteColumns.ISCURRENT, 0);
+              mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
+                      null, null);
+            }
+            mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
+                    Utils.quoteJsonToContentVals(getResponse));
+          }catch (RemoteException | OperationApplicationException e){
+            Log.e(LOG_TAG, "Error applying batch insert", e);
+          }
         }
       } catch (IOException e){
+        e.printStackTrace();
+      } catch (JSONException e) {
         e.printStackTrace();
       }
     }
