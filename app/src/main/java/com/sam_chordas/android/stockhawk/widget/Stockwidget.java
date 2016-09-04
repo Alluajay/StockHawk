@@ -1,6 +1,7 @@
 package com.sam_chordas.android.stockhawk.widget;
 
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -8,13 +9,14 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
-import com.sam_chordas.android.stockhawk.service.WidgetviewService;
+
 
 
 /**
@@ -22,22 +24,25 @@ import com.sam_chordas.android.stockhawk.service.WidgetviewService;
  */
 public class Stockwidget extends AppWidgetProvider {
     String Tag_widget="StockWidget";
-    Context mContext;
-    Cursor mCursor;
+    public static String WIDGET_BUTTON1 = "android.appwidget.action.WIDGET_BUTTON1";
+    public static String WIDGET_BUTTON2 = "android.appwidget.action.WIDGET_BUTTON2";
+    public static int[] appwidid;
+    public int id;
+    public static AppWidgetManager widgetManager;
+    public static int pos=1;
+    public int length;
 
 
     @Override
     public void onUpdate(Context context, AppWidgetManager
             appWidgetManager,int[] appWidgetIds) {
 
-/*int[] appWidgetIds holds ids of multiple instance
- * of your widget
- * meaning you are placing more than one widgets on
- * your homescreen*/
-        final int N = appWidgetIds.length;
+        appwidid=appWidgetIds;
+        widgetManager=appWidgetManager;
+         int N = appWidgetIds.length;
         Log.e(Tag_widget,"initiated");
         for (int i = 0; i < N; ++i) {
-            RemoteViews remoteViews = updateWidgetListView(context,
+            RemoteViews remoteViews = updateWidgetView(context,
                     appWidgetIds[i]);
             appWidgetManager.updateAppWidget(appWidgetIds[i],
                     remoteViews);
@@ -45,28 +50,77 @@ public class Stockwidget extends AppWidgetProvider {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
-    private RemoteViews updateWidgetListView(Context context,
+    private RemoteViews updateWidgetView(Context context,
                                              int appWidgetId) {
-        Log.e(Tag_widget,"initiated");
+        Log.e(Tag_widget,"initiated "+pos);
+        id=appWidgetId;
 
-        //which layout to show on widget
+
+        android.support.v4.content.CursorLoader cursorLoader=new android.support.v4.content.CursorLoader(context, QuoteProvider.Quotes.CONTENT_URI,
+                new String[]{ QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.BIDPRICE,
+                        QuoteColumns.PERCENT_CHANGE, QuoteColumns.CREATED,QuoteColumns.CHANGE, QuoteColumns.ISUP},
+                QuoteColumns._ID +" = ?",
+                new String[]{""+pos},
+                null);
+        Cursor cursor =cursorLoader.loadInBackground();
+
+        cursor.moveToFirst();
         RemoteViews remoteViews = new RemoteViews(
                 context.getPackageName(),R.layout.stockwidget);
+        remoteViews.setTextViewText(R.id.Widget_Head,cursor.getString(cursor.getColumnIndex(QuoteColumns.SYMBOL)));
+        remoteViews.setTextViewText(R.id.Widget_Bidprice,cursor.getString(cursor.getColumnIndex(QuoteColumns.BIDPRICE)));
+        remoteViews.setTextViewText(R.id.Widget_change,cursor.getString(cursor.getColumnIndex(QuoteColumns.CHANGE)));
+        remoteViews.setTextViewText(R.id.Widget_Pchange,cursor.getString(cursor.getColumnIndex(QuoteColumns.PERCENT_CHANGE)));
 
-        //RemoteViews Service needed to provide adapter for ListView
-        Intent svcIntent = new Intent(context, WidgetviewService.class);
-        //passing app widget id to that RemoteViews Service
-        svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        //setting a unique Uri to the intent
-        //don't know its purpose to me right now
-        svcIntent.setData(Uri.parse(
-                svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
-        //setting adapter to listview of the widget
-        remoteViews.setRemoteAdapter(appWidgetId, R.id.listViewWidget,
-                svcIntent);
-        //setting an empty view in case of no data
-        remoteViews.setEmptyView(R.id.listViewWidget, R.id.empty_view);
+
+        Intent intent_but1 = new Intent(WIDGET_BUTTON1);
+        intent_but1.putExtra("cursor+pos",pos);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent_but1, PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setOnClickPendingIntent(R.id.Wid_button1, pendingIntent );
+
+
+        Intent intent_but2 = new Intent(WIDGET_BUTTON2);
+        intent_but1.putExtra("cursor+pos",pos);
+        PendingIntent pendingIntent1 = PendingIntent.getBroadcast(context, 0, intent_but2, PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setOnClickPendingIntent(R.id.Wid_button2, pendingIntent1 );
+        cursor.close();
+
+
         return remoteViews;
+    }
+
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        // TODO Auto-generated method stub
+        super.onReceive(context, intent);
+
+        android.support.v4.content.CursorLoader cursorLoader=new android.support.v4.content.CursorLoader(context, QuoteProvider.Quotes.CONTENT_URI,
+                new String[]{ QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.BIDPRICE,
+                        QuoteColumns.PERCENT_CHANGE, QuoteColumns.CREATED,QuoteColumns.CHANGE, QuoteColumns.ISUP},
+                QuoteColumns.ISCURRENT +" = ?",
+                new String[]{"1"},
+                null);
+        Cursor cursor =cursorLoader.loadInBackground();
+        length=cursor.getCount();
+        cursor.close();
+        Log.e(Tag_widget,length+"");
+
+        if (WIDGET_BUTTON2.equals(intent.getAction())) {
+            if(pos<length){
+                pos++;
+
+            }
+            onUpdate(context,widgetManager,appwidid);
+
+        }
+        if (WIDGET_BUTTON1.equals(intent.getAction())) {
+
+            if(pos>=2){
+                pos--;
+            }
+            onUpdate(context,widgetManager,appwidid);
+        }
     }
 
 }

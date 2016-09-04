@@ -49,6 +49,8 @@
         <receiver android:name=".widget.Stockwidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.WIDGET_BUTTON1" />
+                <action android:name="android.appwidget.action.WIDGET_BUTTON2" />
             </intent-filter>
             <service
                 android:name=".service.WidgetviewService"

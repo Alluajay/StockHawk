@@ -36,7 +36,6 @@ public class DetailedActivity extends AppCompatActivity implements
     String currency = "";
     public static String Tag="DetailedActivity";
     public static final String TAG_STOCK_SYMBOL = "STOCK_SYMBOL";
-    public static String TAG_STOCK_CREATED ="Stock_created";
     private static final int STOCKS_LOADER = 1;
     public LineChart chart;
     public TextView Bidprice,Change,Pchange;
@@ -74,6 +73,7 @@ public class DetailedActivity extends AppCompatActivity implements
         Bidprice.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.BIDPRICE)));
         Change.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.CHANGE)));
         Pchange.setText(cursor.getString(cursor.getColumnIndex(QuoteColumns.PERCENT_CHANGE)));
+        cursor.close();
 
     }
 
@@ -108,18 +108,24 @@ public class DetailedActivity extends AppCompatActivity implements
         data.moveToNext();
 
 
-        Log.d(TAG_STOCK_SYMBOL+"is current",data.getCount()+"");
+        Log.d(TAG_STOCK_SYMBOL+" is current",data.getCount()+"");
 
-        for(Data.moveToFirst();!Data.isAfterLast();Data.moveToNext()) {
+        int k=0;
+        for(Data.moveToLast();!Data.isBeforeFirst()&&k<10;Data.moveToPrevious(),k++) {
 
             Entry one=new Entry( Float.parseFloat(Data.getString(Data.getColumnIndex(QuoteColumns.BIDPRICE))),Data.getPosition());
             valueSet1.add(one);
             Log.e(TAG_STOCK_SYMBOL,Data.getString(Data.getColumnIndex(QuoteColumns.BIDPRICE)));
+        }
+        ArrayList<Entry> values=new ArrayList<>();
+        for(int i=valueSet1.size()-1;i>=0;i--){
+            values.add(valueSet1.get(i));
             xAxis.add("");
+
+            Log.e(Tag,"in pos "+i );
         }
 
-
-        LineDataSet barDataSet1 = new LineDataSet(valueSet1, "Brand 1");
+        LineDataSet barDataSet1 = new LineDataSet(values, currency);
         barDataSet1.setColor(Color.rgb(0, 155, 0));
         dataSets.add(barDataSet1);
 
@@ -130,6 +136,7 @@ public class DetailedActivity extends AppCompatActivity implements
         chart.setDescription("My Chart");
         chart.animateXY(2000, 3000);
         chart.invalidate();
+        Data.close();
 
 
     }

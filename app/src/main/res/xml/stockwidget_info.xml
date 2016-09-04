@@ -4,7 +4,7 @@
     android:initialLayout="@layout/stockwidget"
     android:minHeight="150dip"
     android:minWidth="200dip"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:previewImage="@layout/stockwidget"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="200"
     android:widgetCategory="home_screen"></appwidget-provider>

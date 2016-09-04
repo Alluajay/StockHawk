@@ -38,6 +38,7 @@ import com.google.android.gms.gcm.Task;
 import com.melnykov.fab.FloatingActionButton;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
 
+
 public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
   /**
@@ -83,7 +84,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         Log.d(Tag,"network not connected");
         networkToast();
         AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
-        alertDialog.setTitle("No Internet Connection").setMessage("Your phone is not connected to internet.Make sure you are connteced")
+        alertDialog.setTitle("No Internet Connection").setMessage("Your phone is not connected to internet.Make sure you are connteced to view the latest content ")
                 .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
                   @Override
                   public void onClick(DialogInterface dialog, int which) {
@@ -126,20 +127,17 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
               .inputType(InputType.TYPE_CLASS_TEXT)
               .input(R.string.input_hint, R.string.input_prefill, new MaterialDialog.InputCallback() {
                 @Override public void onInput(MaterialDialog dialog, CharSequence input) {
-                  // On FAB click, receive user input. Make sure the stock doesn't already exist
-                  // in the DB and proceed accordingly
                   Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                       new String[] { QuoteColumns.SYMBOL }, QuoteColumns.SYMBOL + "= ?",
                       new String[] { input.toString() }, null);
                   if (c.getCount() != 0) {
                     Toast toast =
-                        Toast.makeText(MyStocksActivity.this, "This stock is already saved!",
+                        Toast.makeText(MyStocksActivity.this, "This ic_launcher is already saved!",
                             Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                     toast.show();
                     return;
                   } else {
-                    // Add the stock to DB
                     mServiceIntent.putExtra("tag", "add");
                     mServiceIntent.putExtra("symbol", input.toString());
                     startService(mServiceIntent);
@@ -207,9 +205,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
+
     int id = item.getItemId();
 
     //noinspection SimplifiableIfStatement
@@ -218,7 +214,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     }
 
     if (id == R.id.action_change_units){
-      // this is for changing stock changes from percent value to dollar value
+      // this is for changing ic_launcher changes from percent value to dollar value
       Utils.showPercent = !Utils.showPercent;
       this.getContentResolver().notifyChange(QuoteProvider.Quotes.CONTENT_URI, null);
     }
