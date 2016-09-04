@@ -5,11 +5,8 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Parcelable;
 import android.util.Log;
 import android.widget.RemoteViews;
 

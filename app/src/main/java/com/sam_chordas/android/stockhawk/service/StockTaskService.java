@@ -8,15 +8,12 @@ import android.database.DatabaseUtils;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.RemoteException;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
-import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.rest.Utils;
@@ -43,8 +40,6 @@ public class StockTaskService extends GcmTaskService{
   private Context mContext;
   private StringBuilder mStoredSymbols = new StringBuilder();
   private boolean isUpdate;
-
-  public StockTaskService(){}
 
   public StockTaskService(Context context){
     mContext = context;
@@ -126,7 +121,8 @@ public class StockTaskService extends GcmTaskService{
         getResponse = fetchData(urlString);
         JSONObject jsonObject=new JSONObject(getResponse);
         if(params.getTag().equals("add")){
-        JSONObject quote=jsonObject.getJSONObject("query").getJSONObject("results").getJSONObject("quote");
+          //checking for incorrect symbol
+          JSONObject quote=jsonObject.getJSONObject("query").getJSONObject("results").getJSONObject("quote");
         Log.e(LOG_TAG,quote.toString());
         if(quote.getString("Ask")!="null"){
          result = GcmNetworkManager.RESULT_SUCCESS;
@@ -144,6 +140,7 @@ public class StockTaskService extends GcmTaskService{
           Log.e(LOG_TAG, "Error applying batch insert", e);
           }
           }else{
+          //shows toast message when user enters incorrect symbol
           Handler handler = new Handler(Looper.getMainLooper());
           handler.post(new Runnable() {
 
