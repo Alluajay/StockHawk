@@ -77,7 +77,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         Log.d(Tag,"network not connected");
         networkToast();
         AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
-        alertDialog.setTitle("No Internet Connection").setMessage("Your phone is not connected to internet.Make sure you are connteced to view the latest content ")
+        alertDialog.setTitle("No Internet Connection").setMessage(getString(R.string.Internetmessage))
                 .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
                   @Override
                   public void onClick(DialogInterface dialog, int which) {
@@ -125,7 +125,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                       new String[] { input.toString() }, null);
                   if (c.getCount() != 0) {
                     Toast toast =
-                        Toast.makeText(MyStocksActivity.this, "This ic_launcher is already saved!",
+                        Toast.makeText(MyStocksActivity.this,getString(R.string.toast),
                             Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                     toast.show();

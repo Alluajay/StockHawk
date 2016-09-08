@@ -3,7 +3,7 @@
 
     <string name="action_example">Example action</string>
 
-    <string name="action_settings"  translatable="true">Settings</string>
+    <string name="action_settings" translatable="true">Settings</string>
     <string name="action_change_units" translatable="true">Change Units</string>
     <string name="symbol_search" translatable="true">Symbol Search</string>
     <string name="content_test" translatable="true">Search for a Stock Symbol</string>
@@ -20,5 +20,9 @@
     <string name="change" translatable="true">Change</string>
     <string name="prev" translatable="true">Previous</string>
     <string name="next" translatable="true">next</string>
+    <string name="toast" translatable="true">This ic_launcher is already saved!</string>
+
+    <string name="Internetmessage" translatable="true">Your phone is not connected to internet.Make sure you are connteced to view the latest content </string>
+    <string name="chart" translatable="true">My chart</string>
 
 </resources>

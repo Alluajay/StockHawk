@@ -16,6 +16,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.MyStocksActivity"
@@ -52,6 +53,7 @@
                 <action android:name="android.appwidget.action.WIDGET_BUTTON1" />
                 <action android:name="android.appwidget.action.WIDGET_BUTTON2" />
             </intent-filter>
+
             <service
                 android:name=".service.WidgetviewService"
                 android:permission="android.permission.BIND_REMOTEVIEWS" />
@@ -60,7 +62,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/stockwidget_info" />
         </receiver>
-
     </application>
 
 </manifest>

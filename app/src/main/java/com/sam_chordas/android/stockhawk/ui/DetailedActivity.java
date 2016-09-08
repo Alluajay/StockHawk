@@ -122,7 +122,7 @@ public class DetailedActivity extends AppCompatActivity implements
         LineData data1 = new LineData(xAxis, dataSets);
 
         chart.setData(data1);
-        chart.setDescription("My Chart");
+        chart.setDescription(getString(R.string.chart));
         chart.animateXY(2000, 3000);
         chart.invalidate();
         Data.close();

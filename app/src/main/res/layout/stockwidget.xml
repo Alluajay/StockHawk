@@ -7,61 +7,10 @@
     android:paddingRight="16dp"
     >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Widget_Head"
-        android:text="@string/stocksymbol"
-        android:contentDescription="@string/stocksymbol"
-        android:importantForAccessibility="yes"
-        android:textSize="35dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Widget_Bidprice"
-        android:text="@string/bidprice"
-        android:contentDescription="@string/bidprice"
-        android:layout_alignParentRight="true"
-        android:textSize="30dp"
-        android:textAlignment="inherit"
-        android:gravity="left" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="@string/change"
-        android:contentDescription="@string/change"
-        android:textSize="20dp"
-        android:layout_below="@+id/Widget_Head"
-        android:id="@+id/Widget_change"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:textSize="30dp"
-        android:id="@+id/Widget_Pchange"
-        android:text="@string/percent_change"
-        android:contentDescription="@string/percent_change"
-        android:layout_below="@+id/Widget_Bidprice"
-        android:layout_alignParentRight="true"
-        />
-
-    <Button
-        android:id="@+id/Wid_button1"
-        android:contentDescription="@string/prev"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:text="Prev"
-        />
-
-    <Button
-        android:id="@+id/Wid_button2"
-        android:contentDescription="@string/next"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:text="Next"
-        />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/widgetCollectionList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

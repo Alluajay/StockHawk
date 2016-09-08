@@ -16,7 +16,6 @@
       android:layout_height="wrap_content"
       android:gravity="left|center_vertical"
       tools:text="GOOG"
-
       />
   <LinearLayout
       android:layout_width="0dp"
